@@ -1,0 +1,48 @@
+{
+	"name": "react-native-zebra-link-os",
+	"version": "0.0.1",
+	"description": "",
+	"author": "barty32",
+	"license": "MIT",
+	"homepage": "https://github.com/microrisc-projekty/react-native-zebra-link-os",
+	"repository": "https://github.com/microrisc-projekty/react-native-zebra-link-os",
+	"keywords": [
+		"react-native",
+		"ios",
+		"android"
+	],
+	"type": "module",
+	"react-native": "dist/index",
+	"source": "dist/index",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"scripts": {
+		"prepublish": "npm run build",
+		"build": "tsc",
+		"watch": "tsc --watch",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"files": [
+		"src",
+		"android",
+		"ios",
+		"!android/build",
+		"!ios/build",
+		"!**/__tests__",
+		"!**/__fixtures__",
+		"!**/__mocks__"
+	],
+	"devDependencies": {},
+	"peerDependencies": {
+		"react": "*",
+		"react-native": "*"
+	},
+	"codegenConfig": {
+		"name": "RNZebraLinkOSSpec",
+		"type": "modules",
+		"jsSrcsDir": "src/native",
+		"android": {
+			"javaPackageName": "com.rnzebralinkos"
+		}
+	}
+}

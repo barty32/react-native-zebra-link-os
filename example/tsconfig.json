@@ -1,0 +1,14 @@
+{
+	"extends": "expo/tsconfig.base",
+	"compilerOptions": {
+		"strict": true,
+		"paths": {
+			"react-native-zebra-link-os": [
+				"../src/index"
+			],
+			"react-native-zebra-link-os/*": [
+				"../src/*"
+			]
+		}
+	}
+}
