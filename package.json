@@ -8,12 +8,11 @@
 	"repository": "https://github.com/microrisc-projekty/react-native-zebra-link-os",
 	"keywords": [
 		"react-native",
-		"ios",
 		"android"
 	],
 	"type": "module",
-	"react-native": "dist/index",
-	"source": "dist/index",
+	"react-native": "src/index.ts",
+	"source": "src/index.ts",
 	"main": "dist/index.js",
 	"types": "dist/index.d.ts",
 	"scripts": {
@@ -23,14 +22,11 @@
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"files": [
+		"tsconfig.json",
 		"src",
+		"dist",
 		"android",
-		"ios",
-		"!android/build",
-		"!ios/build",
-		"!**/__tests__",
-		"!**/__fixtures__",
-		"!**/__mocks__"
+		"!android/build"
 	],
 	"devDependencies": {},
 	"peerDependencies": {

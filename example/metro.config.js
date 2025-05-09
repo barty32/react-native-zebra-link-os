@@ -18,10 +18,6 @@ config.resolver.nodeModulesPaths = [
   path.resolve(__dirname, '../node_modules'),
 ];
 
-config.resolver.extraNodeModules = {
-  'react-native-zebra-link-os': '..',
-};
-
 config.watchFolders = [path.resolve(__dirname, '..')];
 
 config.transformer.getTransformOptions = async () => ({

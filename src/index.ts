@@ -1,6 +1,6 @@
-import { DiscoveredPrinter } from "./DiscoveredPrinter.js";
-import { ZebraPrinter } from "./ZebraPrinter.js";
-import ZebraNative, { handleNativeException, NativeDiscoveredPrinter } from "./native/NativeRNZebraLinkOS.js";
+import { DiscoveredPrinter } from "./DiscoveredPrinter";
+import { ZebraPrinter } from "./ZebraPrinter";
+import ZebraNative, { handleNativeException, NativeDiscoveredPrinter } from "./native/NativeRNZebraLinkOS";
 
 /**
  * This function will search the network using a combination of discovery methods to find printers on the network. 

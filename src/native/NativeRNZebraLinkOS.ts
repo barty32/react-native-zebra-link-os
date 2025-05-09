@@ -1,6 +1,6 @@
 import { TurboModule, TurboModuleRegistry } from "react-native";
-import { NativeException } from "../types.js";
-import { ConnectionError, DiscoveryError, ZebraPrinterLanguageUnknownError, ZebraPrinterParseError } from "../errors.js";
+import { NativeException } from "../types";
+import { ConnectionError, DiscoveryError, ZebraPrinterLanguageUnknownError, ZebraPrinterParseError } from "../errors";
 
 export type PrinterHandle = string;
 export type ProgressCallback = (bytesWritten: number, totalBytes: number) => void;

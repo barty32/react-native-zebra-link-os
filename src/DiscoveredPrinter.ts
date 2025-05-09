@@ -1,6 +1,6 @@
-import { connectPrinter } from "./index.js";
-import { NativeDiscoveredPrinter, PrinterHandle } from "./native/NativeRNZebraLinkOS.js";
-import { PrinterCommunicationType } from "./types.js";
+import { connectPrinter } from "./index";
+import { NativeDiscoveredPrinter, PrinterHandle } from "./native/NativeRNZebraLinkOS";
+import { PrinterCommunicationType } from "./types";
 
 
 

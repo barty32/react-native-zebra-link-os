@@ -1,5 +1,5 @@
-import NativeModule, { handleNativeException, NativePrinterConnectionData, PrinterHandle, PrinterStatus, ProgressCallback } from "./native/NativeRNZebraLinkOS.js";
-import { PrinterLanguage } from "./types.js";
+import NativeModule, { handleNativeException, NativePrinterConnectionData, PrinterHandle, PrinterStatus, ProgressCallback } from "./native/NativeRNZebraLinkOS";
+import { PrinterLanguage } from "./types";
 
 
 export class ZebraPrinter {
