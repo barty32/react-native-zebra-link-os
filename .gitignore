@@ -1,1 +1,3 @@
-/discovery_data.json
+node_modules/
+dist/
+android/build/
