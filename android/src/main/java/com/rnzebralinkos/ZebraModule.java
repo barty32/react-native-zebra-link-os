@@ -4,7 +4,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.HashMap;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.net.wifi.WifiManager;
 import android.net.wifi.WifiManager.MulticastLock;
 import android.os.Build;
@@ -267,12 +269,19 @@ public class ZebraModule extends NativeRNZebraLinkOSSpec {
 		};
 		try {
 			Log.d("ZebraModule", "Starting printer discovery.");
-			WifiManager wifi = (WifiManager)getReactApplicationContext().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-			MulticastLock lock = wifi.createMulticastLock("wifi_multicast_lock");
-			lock.setReferenceCounted(true);
-			lock.acquire();
+
+			Context context = getReactApplicationContext().getApplicationContext();
+			MulticastLock lock = null;
+			if(context.checkCallingOrSelfPermission(Manifest.permission.CHANGE_WIFI_MULTICAST_STATE) == PackageManager.PERMISSION_GRANTED) {
+				WifiManager wifi = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
+				lock = wifi.createMulticastLock("wifi_multicast_lock");
+				lock.setReferenceCounted(true);
+				lock.acquire();
+			}
 			NetworkDiscoverer.findPrinters(discoveryHandler);
-			lock.release();
+			if(lock != null){
+				lock.release();
+			}
 		} catch (DiscoveryException e) {
 			promise.reject("DiscoveryException", e.getMessage(), e);
 		}
