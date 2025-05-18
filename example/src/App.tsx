@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { DiscoveredPrinter, findNetworkPrinters, ZebraPrinter } from 'react-native-zebra-link-os';
+import { DiscoveredPrinter, findNetworkPrinters, findUsbPrinters, ZebraPrinter } from 'react-native-zebra-link-os';
 import { ActivityIndicator, Button, Pressable, SafeAreaView, ScrollView, Text, View } from 'react-native';
 
 export default function App() {
@@ -9,7 +9,7 @@ export default function App() {
 	
 	const runDiscovery = async () => {
 		setLoading(true);
-		await findNetworkPrinters((printer) => {
+		await findUsbPrinters((printer) => {
 			console.log('Printer found:', printer.getDiscoveryDataMap().entries());
 			setDiscoveredPrinters((prev) => ({
 				...prev,
@@ -21,18 +21,18 @@ export default function App() {
 
 	const print = (async () => {
 		if(!printer) return;
-		// await printer.send(`
-		// 	^XA
-		// 		^FO120,80^A0,20^FDABCD1234^FS 
-		// 		^FO10,10^GB245,120,2^FS
-		// 		^FO20,20^BQN,2,4^FDQA,12345678^FS
-		// 	^XZ
-		// `)
 		await printer.send(`
 			^XA
-				^HH
+				^FO120,80^A0,20^FDABCD1234^FS 
+				^FO10,10^GB245,120,2^FS
+				^FO20,20^BQN,2,4^FDQA,12345678^FS
 			^XZ
 		`)
+		// await printer.send(`
+		// 	^XA
+		// 		^HH
+		// 	^XZ
+		// `)
 		//
 		// ^FO50,20^A0,40^FDTest label^FS 
 		// ^FO30,60^BY2^BCN,40,,,,A^FD123ABC^FS 
@@ -67,7 +67,7 @@ export default function App() {
 								}
 							}}
 						>
-							<Text>{p.getAddress() + '\n' + p.getCommunicationType()}</Text>
+							<Text>{p.getAddress() + '\n' + p.getConnectionType()}</Text>
 						</Pressable>
 					))}
 					<ActivityIndicator
