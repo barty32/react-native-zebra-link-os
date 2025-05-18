@@ -1,35 +1,30 @@
 import { connectPrinter } from "./index";
-import { NativeDiscoveredPrinter, PrinterHandle } from "./native/NativeRNZebraLinkOS";
-import { PrinterCommunicationType } from "./types";
-
+import { NativeDiscoveredPrinter, PrinterConnectionType, PrinterHandle } from "./native/NativeRNZebraLinkOS";
 
 
 export class DiscoveredPrinter {
 
 	private readonly handle: PrinterHandle;
 	private address: string;
-	private communicationType: PrinterCommunicationType;
+	private connectionType: PrinterConnectionType;
 	private discoveryData: Map<string, string>;
 
 	constructor(printer: NativeDiscoveredPrinter) {
 		this.handle = printer.handle;
 		this.address = printer.address;
-
-		if(printer.communicationType === 'bluetooth')
-			this.communicationType = PrinterCommunicationType.BLUETOOTH;
-		else if(printer.communicationType === 'usb')
-			this.communicationType = PrinterCommunicationType.USB;
-		else
-			this.communicationType = PrinterCommunicationType.NETWORK;
-
+		this.connectionType = printer.connectionType;
 		this.discoveryData = new Map<string, string>();
-		for(const key in this.discoveryData) {
+		for(const key in printer.discoveryData) {
 			this.discoveryData.set(key, printer.discoveryData[key]);
 		}
 	}
 
 	async connect() {
 		return connectPrinter(this.handle);
+	}
+
+	getHandle() {
+		return this.handle;
 	}
 
 	getAddress() {
@@ -40,8 +35,7 @@ export class DiscoveredPrinter {
 		return this.discoveryData;
 	}
 
-	getCommunicationType() {
-		return this.communicationType;
+	getConnectionType() {
+		return this.connectionType;
 	}
-
 }
