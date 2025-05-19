@@ -885,6 +885,7 @@ public class ZebraModule extends NativeRNZebraLinkOSSpec {
 						}
 					}
 				}
+				throw new ConnectionException("USB device is not connected");
 			} catch(NumberFormatException e) {
 				//bottom ConnectionException will be thrown
 			}
