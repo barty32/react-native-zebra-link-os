@@ -28,7 +28,9 @@
 		"android",
 		"!android/build"
 	],
-	"devDependencies": {},
+	"devDependencies": {
+		"typescript": "~5.8.3"
+	},
 	"peerDependencies": {
 		"react": "*",
 		"react-native": "*"
