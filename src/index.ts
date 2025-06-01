@@ -42,7 +42,7 @@ export async function connectPrinter(handle: string): Promise<ZebraPrinter> {
 	return new ZebraPrinter(data);
 }
 
-export async function connectNetworkPrinter(ipAddress: string, port = -1, statusPort = -1): Promise<ZebraPrinter> {
+export function createNetworkPrinter(ipAddress: string, port = -1, statusPort = -1): PrinterHandle {
 	let handle = '';
 	if(port === -1 && statusPort === -1) {
 		handle = `TCP:${ipAddress}:9100`;
@@ -56,24 +56,28 @@ export async function connectNetworkPrinter(ipAddress: string, port = -1, status
 	else {
 		handle = `TCP_MULTI:${ipAddress}:${port}:${statusPort}`;
 	}
+	return handle;
+}
+
+export function createBluetoothPrinter(macAddress: string, useBle: boolean, insecure = false): PrinterHandle {
+	let handle = '';
+	if(useBle) handle = `BTLE:${macAddress}`;
+	else if(insecure) handle = `BT_INSECURE:${macAddress}`;
+	else handle = `BT:${macAddress}`;
+	return handle;
+}
+
+export async function connectNetworkPrinter(ipAddress: string, port = -1, statusPort = -1): Promise<ZebraPrinter> {
+	const handle = createNetworkPrinter(ipAddress, port, statusPort);
 	console.log("Connecting to network printer:", handle);
 	return await connectPrinter(handle);
 }
 
 export async function connectBluetoothPrinter(macAddress: string, useBle: boolean, insecure = false): Promise<ZebraPrinter> {
-	let handle = '';
-	if(useBle) handle = `BTLE:${macAddress}`;
-	else if(insecure) handle = `BT_INSECURE:${macAddress}`;
-	else handle = `BT:${macAddress}`;
+	const handle = createBluetoothPrinter(macAddress, useBle, insecure);
 	console.log("Connecting to bluetooth printer:", handle);
 	return await connectPrinter(handle);
 }
-
-// export async function connectUsbPrinter(): Promise<ZebraPrinter> {
-// 	const handle = 'USB:vid:pid';
-// 	console.log("Connecting to USB printer:", handle);
-// 	return await connectPrinter(handle);
-// }
 
 export function handleToConnectionType(handle: PrinterHandle) {
 	if(handle.startsWith('TCP')) return PrinterConnectionType.Network;
