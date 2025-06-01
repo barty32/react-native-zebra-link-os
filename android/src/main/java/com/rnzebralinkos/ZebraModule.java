@@ -652,7 +652,6 @@ public class ZebraModule extends NativeRNZebraLinkOSSpec {
 		try {
 			Log.d("ZebraModule", "Starting bluetooth printer discovery.");
 			Context context = getReactApplicationContext().getApplicationContext();
-			//TODO: check permissions ACCESS_COARSE_LOCATION, ACCESS_FINE_LOCATION
 
 			if(Build.VERSION.SDK_INT < Build.VERSION_CODES.ECLAIR ||
 				(!useBle && !context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH)) ||
@@ -661,17 +660,15 @@ public class ZebraModule extends NativeRNZebraLinkOSSpec {
 				promise.reject("ConnectionException", "Bluetooth is not supported on this device");
 				return;
 			}
-			if(ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-					ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED &&
-					ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_GRANTED
+			if(ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED ||
+				ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED
 			) {
-				promise.reject("ConnectionException", "Permission to Bluetooth was not granted");
+				promise.reject("ConnectionException", "Bluetooth permissions were not granted");
 				return;
 			}
-			//TODO: this doesn't work, Android says BLUETOOTH_SCAN permission is missing
 			DiscoveryHandler discoveryHandler = new DiscoveryHandlerImpl(useBle ? CONNECTION_BLUETOOTH_LE : CONNECTION_BLUETOOTH, onPrinterFound, promise);
-			if(useBle) BluetoothDiscoverer.findPrinters(context, discoveryHandler);
-			else BluetoothLeDiscoverer.findPrinters(context, discoveryHandler);
+			if(useBle) BluetoothLeDiscoverer.findPrinters(context, discoveryHandler);
+			else BluetoothDiscoverer.findPrinters(context, discoveryHandler);
 		} catch (ConnectionException e) {
 			promise.reject("ConnectionException", e.getMessage(), e);
 		}
@@ -845,11 +842,10 @@ public class ZebraModule extends NativeRNZebraLinkOSSpec {
 			){
 				throw new ConnectionException("Bluetooth is not supported on this device");
 			}
-			if(ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED &&
-					ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) == PackageManager.PERMISSION_GRANTED &&
-					ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_SCAN) == PackageManager.PERMISSION_GRANTED
+			if(ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED ||
+				ContextCompat.checkSelfPermission(context, Manifest.permission.BLUETOOTH_SCAN) != PackageManager.PERMISSION_GRANTED
 			) {
-				throw new ConnectionException("Permission to Bluetooth was not granted");
+				throw new ConnectionException("Bluetooth permissions were not granted");
 			}
 			if(handle.startsWith("BTLE_STATUS")) return new BluetoothLeStatusConnection(mac, mtr, ttw, context);
 			else if(handle.startsWith("BTLE_MULTI")) return new MultichannelBluetoothLeConnection(mac, mtr, ttw, context);
